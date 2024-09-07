@@ -6,6 +6,7 @@ from .auth import Auth
 from base64 import b64decode
 from models.user import User
 from typing import TypeVar
+from flask import request
 
 
 class BasicAuth(Auth):
@@ -64,3 +65,15 @@ class BasicAuth(Auth):
             except Exception:
                 return None
         return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """overloads Auth and retrieves the User instance for a request
+        """
+        email_pwd = self.extract_user_credentials(
+            self.decode_base64_authorization_header(
+                self.extract_base64_authorization_header(
+                    self.authorization_header(request)
+                )
+            )
+        )
+        return self.user_object_from_credentials(*email_pwd)
