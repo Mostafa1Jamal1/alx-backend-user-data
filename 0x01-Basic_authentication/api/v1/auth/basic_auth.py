@@ -55,6 +55,7 @@ class BasicAuth(Auth):
             user_pwd is not None and
             type(user_email) == str and
             type(user_pwd) == str and
+            len(User.search()) > 0 and
             len(User.search({'email': user_email})) > 0
         ):
             user = User.search({'email': user_email})[0]
