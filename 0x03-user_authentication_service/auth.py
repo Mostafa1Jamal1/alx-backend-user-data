@@ -50,7 +50,7 @@ class Auth:
         except NoResultFound:
             return False
 
-    def create_session(self, email: str) -> str | None:
+    def create_session(self, email: str) -> str:
         """find the user corresponding to the email,
         generate a new UUID and store it in the database
         as the user’s session_id, then return the session ID.
