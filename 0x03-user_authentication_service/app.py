@@ -43,16 +43,6 @@ def login():
     """create a new session for the user,
     store it the session ID as a cookie with key "session_id" on the response
     """
-    if request.method == 'DELETE':
-        session_id = request.cookies.get('session_id')
-        print("session_id", session_id)
-        user = AUTH.get_user_from_session_id(session_id=session_id)
-        print("user", user)
-        if user is not None:
-            AUTH.destroy_session(user.id)
-            return redirect(url_for('hello'))
-        abort(403)
-
     email = request.form['email']
     password = request.form['password']
     if AUTH.valid_login(email=email, password=password):
@@ -62,6 +52,18 @@ def login():
         return respond
     else:
         abort(401)
+
+
+@app.route('/sessions', methods=['DELETE'])
+def logout():
+    """If the user exists destroy the session and redirect the user to GET /
+    """
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id=session_id)
+    if user is not None:
+        AUTH.destroy_session(user.id)
+        return redirect(url_for('hello'))
+    abort(403)
 
 
 if __name__ == "__main__":
