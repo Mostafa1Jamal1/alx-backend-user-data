@@ -2,6 +2,7 @@
 """auth module
 """
 
+import uuid
 import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
 from db import DB
@@ -42,3 +43,8 @@ class Auth:
                 password.encode('utf-8'), user.hashed_password)
         except NoResultFound:
             return False
+
+    def _generate_uuid(self) -> str:
+        """return a string representation of a new UUID
+        """
+        return str(uuid.uuid4())
