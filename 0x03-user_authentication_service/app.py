@@ -65,10 +65,9 @@ def logout():
         if user is not None:
             AUTH.destroy_session(user.id)
             return redirect("/")
-        else:
-            make_response(403)
+        abort(403)
     except Exception:
-        make_response(403)
+        abort(403)
 
 
 @app.route('/profile', methods=['GET'])
@@ -79,8 +78,7 @@ def profile():
     user = AUTH.get_user_from_session_id(session_id)
     if user is not None:
         return jsonify({"email": user.email})
-    else:
-        abort(403)
+    abort(403)
 
 
 @app.route('/reset_password', methods=['POST'])
