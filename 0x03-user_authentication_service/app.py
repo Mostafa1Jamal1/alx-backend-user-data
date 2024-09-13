@@ -8,7 +8,8 @@ from flask import (
     request,
     abort,
     redirect,
-    url_for
+    url_for,
+    make_response
 )
 from auth import Auth
 
@@ -65,9 +66,9 @@ def logout():
             AUTH.destroy_session(user.id)
             return redirect("/")
         else:
-            abort(403)
+            make_response(403)
     except Exception:
-        abort(403)
+        make_response(403)
 
 
 @app.route('/profile', methods=['GET'])
